@@ -1,0 +1,15 @@
+{% extends 'CULabsAdminBundle:Crud:view.html.twig' %}
+
+{% block title_page %}{{ 'Import Contact'|trans }}{% endblock %}
+
+{% block view_body %}
+    <p style="margin-left: 30px;" class="lead text-left text-info">{{ help }}</p>
+    {% form_theme form 'CULabsAdminBundle:Form:fields.html.twig' %}
+    <form id="form_new" action="#" method="post" {{ form_enctype(form) }} class="form-horizontal">
+        {{ form_widget(form) }}
+        <div class="form-actions">
+            <input class="btn btn-primary" value="{{ 'Save'|trans }}" type="submit"/>
+            <a href="{{ path('admin_task') }}" class="btn">{{ 'Cancel'|trans }}</a>
+        </div>
+    </form>
+{% endblock %}

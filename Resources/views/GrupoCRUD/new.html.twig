@@ -1,0 +1,19 @@
+{% extends 'CULabsAdminBundle:Crud:view.html.twig' %}
+
+{% block title_page %}{{ 'New Grupo'|trans }}{% endblock %}
+
+{% block actions %}
+    <ul class="actions">
+        <li>
+            <a href="{{ path('admin_contact_grupo') }}" class="btn btn-icon btn-info">     
+              <i class="icon-list icon-white"></i>{{ 'List'|trans }} 
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+    
+{% block view_body %}
+    {% include 'CULabsContactBundle:GrupoCRUD:form.html.twig' with { 
+        'form': form,
+    } %}
+{% endblock %}

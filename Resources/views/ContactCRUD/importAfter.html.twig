@@ -1,0 +1,11 @@
+{% extends 'CULabsAdminBundle:Crud:view.html.twig' %}
+
+{% block title_page %}{{ 'Contactos Registrados'|trans }}{% endblock %}
+
+{% block view_body %}
+<ul>
+    {% for item in mensajes %}
+    <li>{{ item }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

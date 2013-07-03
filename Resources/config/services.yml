@@ -1,0 +1,7 @@
+parameters:
+    cu_labs_contact.import.class: CULabs\ContactBundle\CSV\ContactImportCSV
+
+services:
+    cu_labs_contact.import:
+        class: "%cu_labs_contact.import.class%"
+        arguments: ["@form.factory", "@doctrine.orm.entity_manager"]

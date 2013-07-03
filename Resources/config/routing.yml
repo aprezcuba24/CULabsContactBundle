@@ -1,0 +1,4 @@
+contact_default:
+    resource: "@CULabsContactBundle/Controller/"
+    type:     annotation
+    prefix:   /admin/contact

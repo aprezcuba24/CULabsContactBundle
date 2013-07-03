@@ -1,0 +1,76 @@
+{% extends 'CULabsAdminBundle:Crud:list.html.twig' %}
+
+{% block route_batch %}{{ path('admin_contact_batch') }}{% endblock %}
+
+{% block header_table %}
+{% import 'CULabsAdminBundle:Crud:macros.html.twig' as macros %}
+<tr>
+    <th class="checkall batch"><input type="checkbox" onchange="admin_list_checkall(this, '#Contact_list .check input')"/></th>
+    <th>{{ macros.sort_field('Name'|trans, 'name', sort, 'ajax_Contact', 'admin_contact_sort', 'indicator_table_Contact') }}</th>    
+    <th>{{ 'Email'|trans }}</th>    
+    <th>{{ 'Telefono'|trans }}</th>    
+    <th>{{ 'Celular'|trans }}</th>    
+    <th>{{ 'Ciudad'|trans }}</th>    
+    <th>{{ 'Options'|trans }}</th>
+</tr>
+{% endblock %}
+
+{% block body_table %}
+    {% for entity in pager %}
+    <tr id="row_{{ loop.index }}" onclick="admin_list_checkrow('#' + this.id + ' .check input')">
+        <td class="check"><input type="checkbox" value="{{ entity.id }}" name="ids[]"/></td>
+        <td><a href="{{ path('admin_contact_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
+        <td>{{ entity.email }}</td>
+        <td>{{ entity.telefono }}</td>
+        <td>{{ entity.celular }}</td>
+        <td>{{ entity.ciudad }}</td>
+        <td class="opcions span4">
+            <ul>                  
+                <li>
+                    {% if is_granted('ROLE_CONTACT_SHOW') %}
+                    <a class="btn btn-info btn-small" title="{{ 'show'|trans }}" href="{{ path('admin_contact_show', { 'id': entity.id }) }}">
+                        <i class="icon-eye-open"></i>
+                    </a>
+                    {% endif %}
+                </li>                  
+                <li>
+                    {% if is_granted('ROLE_CONTACT_EDIT') %}
+                    <a class="btn btn-primary btn-small" title="{{ 'edit'|trans }}" href="{{ path('admin_contact_edit', { 'id': entity.id }) }}">
+                        <i class="icon-pencil icon-white"></i>
+                    </a>
+                    {% endif %}
+                </li>                  
+                <li>
+                    {% if is_granted('ROLE_CONTACT_DELETE') %}
+                    <a class="btn btn-danger btn-small" title="{{ 'delete'|trans }}" href="#" onclick="confirmarUrl('{{ 'Realmente desea borrar'|trans }}', '{{ path('admin_contact_delete', { 'id': entity.id }) }}', '{{ 'Comfirmar'|trans }}')">
+                        <i class="icon-remove icon-white"></i>
+                    </a>                                      
+                    {% endif %}                    
+                </li>                
+            </ul>
+        </td>
+    </tr>
+    {% endfor %}
+{% endblock %}
+ 
+{% block footer_table %}
+    <div class="batch">
+        {% if is_granted('ROLE_CONTACT_DELETE') %}
+        <select name="batch_action" class="batch_actions">
+            <option value="">{{'Select a action'|trans}}</option>
+            <option value="delete">{{'Delete'|trans}}</option>
+        </select>
+        <input type="submit" class="btn btn-primary" value="{{'Ok'|trans}}"/>
+        {% endif %}
+        <div class="loader">
+            <img style="display: none" id="indicator_table_Contact" src="{{ asset('bundles/culabsadmin/images/loader.gif') }}"/>
+        </div>
+    </div>
+    {% include 'CULabsAdminBundle:Crud:pager.html.twig' with { 
+        'pager':                pager,
+        'zona':                 'ajax_Contact',
+        'url':                  path('admin_contact'),
+        'url_changemaxperpage': path('admin_contact_changemaxperpage'),
+        'maxperpage_list':      [10,20,30,50, 100],
+    } %}
+{% endblock %}
