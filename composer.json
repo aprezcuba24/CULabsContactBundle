@@ -1,0 +1,22 @@
+{
+    "name": "culabs/contact-bundle",
+    "type": "symfony-bundle",
+    "description": "Bundle para la gestion de contactos symfony2",
+    "keywords": ["contact"],
+    "license": "MIT",
+    "version": "master",
+    "authors": [
+        {
+            "name": "Renier Ricardo Figueredo",
+            "email": "aprezcuba24@gmail.com"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-0": {
+            "CULabs\\ContactBundle": ""
+        }
+    },
+    "target-dir": "CULabs/ContactBundle"
+}
