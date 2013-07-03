@@ -180,7 +180,6 @@ class ContactCRUDController extends CRUDController
      * Batch actions for Contact entity.
      *
      * @Route("/batch", name="admin_contact_batch")
-     * @Secure(roles="ROLE_CONTACT_DELETE")
      */
     public function batchAction()
     {

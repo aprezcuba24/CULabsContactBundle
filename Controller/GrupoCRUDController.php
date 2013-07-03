@@ -3,10 +3,10 @@
 namespace CULabs\ContactBundle\Controller;
 
 use CULabs\AdminBundle\Controller\CRUDController;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use JMS\SecurityExtraBundle\Annotation\Secure;
 use CULabs\ContactBundle\Entity\Grupo;
 use CULabs\ContactBundle\Form\GrupoType;
 use CULabs\ContactBundle\Filter\GrupoFilterType;
@@ -23,10 +23,12 @@ class GrupoCRUDController extends CRUDController
      *
      * @Route("", name="admin_contact_grupo")
      * @Template()
-     * @Secure(roles="ROLE_GRUPO_LIST")
      */
     public function indexAction()
-    {        
+    {       
+        if (false === $this->get('security.context')->isGranted('ROLE_GRUPO_LIST')) {
+            throw new AccessDeniedException();
+        }
         $page = $this->get('request')->query->get('page', $this->getPage());
         $this->setPage($page);
         $pager = $this->getPager();
@@ -75,10 +77,12 @@ class GrupoCRUDController extends CRUDController
      *
      * @Route("/{id}/show", name="admin_contact_grupo_show")
      * @Template()
-     * @Secure(roles="ROLE_GRUPO_SHOW")
      */
     public function showAction($id)
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_GRUPO_SHOW')) {
+            throw new AccessDeniedException();
+        }
         $entity = $this->getRepository('CULabsContactBundle:Grupo')->find($id);
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Grupo entity.');
@@ -93,10 +97,12 @@ class GrupoCRUDController extends CRUDController
      *
      * @Route("/new", name="admin_contact_grupo_new")
      * @Template()
-     * @Secure(roles="ROLE_GRUPO_NEW")
      */
     public function newAction()
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_GRUPO_NEW')) {
+            throw new AccessDeniedException();
+        }
         $entity = new Grupo();
         $form   = $this->createForm(new GrupoType(), $entity);        
         $request = $this->getRequest();
@@ -121,10 +127,12 @@ class GrupoCRUDController extends CRUDController
      *
      * @Route("/{id}/edit", name="admin_contact_grupo_edit")
      * @Template()
-     * @Secure(roles="ROLE_GRUPO_EDIT")
      */
     public function editAction($id)
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_GRUPO_EDIT')) {
+            throw new AccessDeniedException();
+        }
         $entity = $this->getRepository('CULabsContactBundle:Grupo')->find($id);
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Grupo entity.');
@@ -151,10 +159,12 @@ class GrupoCRUDController extends CRUDController
      * Deletes a Grupo entity.
      *
      * @Route("/{id}/delete", name="admin_contact_grupo_delete")
-     * @Secure(roles="ROLE_GRUPO_DELETE")
      */
     public function deleteAction($id)
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_GRUPO_DELETE')) {
+            throw new AccessDeniedException();
+        }
         $entity = $this->getRepository('CULabsContactBundle:Grupo')->find($id);
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Grupo entity.');
@@ -170,10 +180,12 @@ class GrupoCRUDController extends CRUDController
      * Batch actions for Grupo entity.
      *
      * @Route("/batch", name="admin_contact_grupo_batch")
-     * @Secure(roles="ROLE_GRUPO_DELETE")
      */
     public function batchAction()
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_GRUPO_DELETE')) {
+            throw new AccessDeniedException();
+        }
         $method = $this->getRequest()->request->get('batch_action');
         if (!$method) {
             $this->setFlash('error', 'Select a action');
@@ -210,10 +222,12 @@ class GrupoCRUDController extends CRUDController
      * Change Max Per Page.
      *
      * @Route("/changemaxperpage", name="admin_contact_grupo_changemaxperpage")
-     * @Secure(roles="ROLE_GRUPO_LIST")
      */
     public function changeMaxPerPageAction()
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_GRUPO_LIST')) {
+            throw new AccessDeniedException();
+        }
         $this->setSession('maxperpage', $this->get('request')->query->get('cant'));
         $this->setPage(1);
         return $this->redirect($this->generateUrl('admin_contact_grupo'));
@@ -223,10 +237,12 @@ class GrupoCRUDController extends CRUDController
      * Change Sort.
      *
      * @Route("/{field}/{order}/short", name="admin_contact_grupo_sort")
-     * @Secure(roles="ROLE_GRUPO_LIST")
      */
     public function sortAction($field, $order)
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_GRUPO_LIST')) {
+            throw new AccessDeniedException();
+        }
         $this->setPage(1);
         $this->setSort(array(
             'field' => $field,
