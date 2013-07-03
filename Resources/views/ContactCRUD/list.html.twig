@@ -8,9 +8,9 @@
     <th class="checkall batch"><input type="checkbox" onchange="admin_list_checkall(this, '#Contact_list .check input')"/></th>
     <th>{{ macros.sort_field('Name'|trans, 'name', sort, 'ajax_Contact', 'admin_contact_sort', 'indicator_table_Contact') }}</th>    
     <th>{{ 'Email'|trans }}</th>    
-    <th>{{ 'Telefono'|trans }}</th>    
-    <th>{{ 'Celular'|trans }}</th>    
-    <th>{{ 'Ciudad'|trans }}</th>    
+    <th class="hidden-phone">{{ 'Telefono'|trans }}</th>    
+    <th class="hidden-phone">{{ 'Celular'|trans }}</th>    
+    <th class="hidden-phone">{{ 'Ciudad'|trans }}</th>    
     <th>{{ 'Options'|trans }}</th>
 </tr>
 {% endblock %}
@@ -21,9 +21,9 @@
         <td class="check"><input type="checkbox" value="{{ entity.id }}" name="ids[]"/></td>
         <td><a href="{{ path('admin_contact_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
         <td>{{ entity.email }}</td>
-        <td>{{ entity.telefono }}</td>
-        <td>{{ entity.celular }}</td>
-        <td>{{ entity.ciudad }}</td>
+        <td class="hidden-phone">{{ entity.telefono }}</td>
+        <td class="hidden-phone">{{ entity.celular }}</td>
+        <td class="hidden-phone">{{ entity.ciudad }}</td>
         <td class="opcions span4">
             <ul>                  
                 <li>
