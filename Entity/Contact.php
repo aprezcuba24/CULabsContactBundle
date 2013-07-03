@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * CULabs\AdminBundle\Entity\Contact
  *
- * @ORM\Table()
+ * @ORM\Table(name="culabs_contact_cantact")
  * @ORM\Entity(repositoryClass="CULabs\ContactBundle\Entity\ContactRepository")
  */
 class Contact

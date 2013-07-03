@@ -3,10 +3,10 @@
 namespace CULabs\ContactBundle\Controller;
 
 use CULabs\AdminBundle\Controller\CRUDController;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use JMS\SecurityExtraBundle\Annotation\Secure;
 use CULabs\ContactBundle\Entity\Contact;
 use CULabs\ContactBundle\Form\ContactType;
 use CULabs\ContactBundle\Filter\ContactFilterType;
@@ -23,10 +23,12 @@ class ContactCRUDController extends CRUDController
      *
      * @Route("", name="admin_contact")
      * @Template()
-     * @Secure(roles="ROLE_CONTACT_LIST")
      */
     public function indexAction()
     {        
+        if (false === $this->get('security.context')->isGranted('ROLE_CONTACT_LIST')) {
+            throw new AccessDeniedException();
+        }
         $page = $this->get('request')->query->get('page', $this->getPage());
         $this->setPage($page);
         $pager = $this->getPager();
@@ -75,10 +77,12 @@ class ContactCRUDController extends CRUDController
      *
      * @Route("/{id}/show", name="admin_contact_show")
      * @Template()
-     * @Secure(roles="ROLE_CONTACT_SHOW")
      */
     public function showAction($id)
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_CONTACT_SHOW')) {
+            throw new AccessDeniedException();
+        }
         $entity = $this->getRepository('CULabsContactBundle:Contact')->find($id);
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Contact entity.');
@@ -93,10 +97,12 @@ class ContactCRUDController extends CRUDController
      *
      * @Route("/new", name="admin_contact_new")
      * @Template()
-     * @Secure(roles="ROLE_CONTACT_NEW")
      */
     public function newAction()
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_CONTACT_NEW')) {
+            throw new AccessDeniedException();
+        }
         $entity = new Contact();
         $form   = $this->createForm(new ContactType(), $entity);        
         $request = $this->getRequest();
@@ -121,10 +127,12 @@ class ContactCRUDController extends CRUDController
      *
      * @Route("/{id}/edit", name="admin_contact_edit")
      * @Template()
-     * @Secure(roles="ROLE_CONTACT_EDIT")
      */
     public function editAction($id)
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_CONTACT_EDIT')) {
+            throw new AccessDeniedException();
+        }
         $entity = $this->getRepository('CULabsContactBundle:Contact')->find($id);
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Contact entity.');
@@ -151,10 +159,12 @@ class ContactCRUDController extends CRUDController
      * Deletes a Contact entity.
      *
      * @Route("/{id}/delete", name="admin_contact_delete")
-     * @Secure(roles="ROLE_CONTACT_DELETE")
      */
     public function deleteAction($id)
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_CONTACT_DELETE')) {
+            throw new AccessDeniedException();
+        }
         $entity = $this->getRepository('CULabsContactBundle:Contact')->find($id);
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Contact entity.');
@@ -174,6 +184,9 @@ class ContactCRUDController extends CRUDController
      */
     public function batchAction()
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_CONTACT_DELETE')) {
+            throw new AccessDeniedException();
+        }
         $method = $this->getRequest()->request->get('batch_action');
         if (!$method) {
             $this->setFlash('error', 'Select a action');
@@ -210,10 +223,12 @@ class ContactCRUDController extends CRUDController
      * Change Max Per Page.
      *
      * @Route("/changemaxperpage", name="admin_contact_changemaxperpage")
-     * @Secure(roles="ROLE_CONTACT_LIST")
      */
     public function changeMaxPerPageAction()
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_CONTACT_LIST')) {
+            throw new AccessDeniedException();
+        }
         $this->setSession('maxperpage', $this->get('request')->query->get('cant'));
         $this->setPage(1);
         return $this->redirect($this->generateUrl('admin_contact'));
@@ -223,10 +238,12 @@ class ContactCRUDController extends CRUDController
      * Change Sort.
      *
      * @Route("/{field}/{order}/short", name="admin_contact_sort")
-     * @Secure(roles="ROLE_CONTACT_LIST")
      */
     public function sortAction($field, $order)
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_CONTACT_LIST')) {
+            throw new AccessDeniedException();
+        }
         $this->setPage(1);
         $this->setSort(array(
             'field' => $field,
@@ -240,10 +257,12 @@ class ContactCRUDController extends CRUDController
      *
      * @Route("/import", name="admin_contact_import")
      * @Template()
-     * @Secure(roles="ROLE_IMPORT_CONTACT")
      */
     public function importAction()
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_IMPORT_CONTACT')) {
+            throw new AccessDeniedException();
+        }
         $import_service = $this->get('cu_labs_contact.import');
         $form = $import_service->getForm();
         $request = $this->getRequest();        
@@ -269,10 +288,12 @@ class ContactCRUDController extends CRUDController
      *
      * @Route("/import/after", name="admin_contact_import_after")
      * @Template()
-     * @Secure(roles="ROLE_IMPORT_CONTACT")
      */
     public function importAfterAction()
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_IMPORT_CONTACT')) {
+            throw new AccessDeniedException();
+        }
         $mensajes = unserialize($this->getRequest()->getSession()->getFlash('notice_import'));
         return array(
             'mensajes' => $mensajes,

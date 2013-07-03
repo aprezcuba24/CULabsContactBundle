@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CULabs\ContactBundle\Entity\Grupo
  *
- * @ORM\Table()
+ * @ORM\Table(name="culabs_contact_grupo")
  * @ORM\Entity(repositoryClass="CULabs\ContactBundle\Entity\GrupoRepository")
  */
 class Grupo
