@@ -1,0 +1,40 @@
+{% extends 'CULabsAdminBundle:Crud:view.html.twig' %}
+
+{% block title_page %}{{ 'Edit MensajeMasivo'|trans }}{% endblock %}
+
+{% block actions %}
+    <ul class="actions">
+        <li>
+            <a href="{{ path('admin_mensajemasivo') }}" class="btn btn-icon btn-info">     
+              <i class="icon-list icon-white"></i>{{ 'List'|trans }} 
+            </a>
+        </li>
+        {% if is_granted('ROLE_MENSAJEMASIVO_NEW') %}
+        <li>
+            <a href="{{ path('admin_mensajemasivo_new') }}" class="btn btn-icon btn-primary">     
+              <i class="icon-plus-sign icon-white"></i>{{ 'New'|trans }} 
+            </a>
+        </li>
+        {% endif %}
+        {% if is_granted('ROLE_MENSAJEMASIVO_SHOW') %}
+        <li>
+            <a href="{{ path('admin_mensajemasivo_show', { 'id': entity.id }) }}" class="btn btn-icon btn-info">     
+              <i class="icon-eye-open"></i>{{ 'Show'|trans }} 
+            </a>
+        </li>
+        {% endif %}
+        {% if is_granted('ROLE_MENSAJEMASIVO_DELETE') %}
+        <li>
+            <a href="#" onclick="confirmarUrl('{{ 'Realmente desea borrar'|trans }}', '{{ path('admin_mensajemasivo_delete', { 'id': entity.id }) }}', '{{ 'Comfirmar'|trans }}')" class="btn btn-icon btn-danger">     
+              <i class="icon-remove icon-white"></i>{{ 'Delete'|trans }} 
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+{% endblock %}
+    
+{% block view_body %}
+    {% include 'CULabsContactBundle:MensajeMasivoCRUD:form.html.twig' with { 
+        'form': form,
+    } %}
+{% endblock %}

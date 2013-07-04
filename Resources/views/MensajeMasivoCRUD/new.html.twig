@@ -1,0 +1,19 @@
+{% extends 'CULabsAdminBundle:Crud:view.html.twig' %}
+
+{% block title_page %}{{ 'New MensajeMasivo'|trans }}{% endblock %}
+
+{% block actions %}
+    <ul class="actions">
+        <li>
+            <a href="{{ path('admin_mensajemasivo') }}" class="btn btn-icon btn-info">     
+              <i class="icon-list icon-white"></i>{{ 'List'|trans }} 
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+    
+{% block view_body %}
+    {% include 'CULabsContactBundle:MensajeMasivoCRUD:form.html.twig' with { 
+        'form': form,
+    } %}
+{% endblock %}

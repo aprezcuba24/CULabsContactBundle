@@ -1,0 +1,77 @@
+{% extends 'CULabsAdminBundle:Crud:list.html.twig' %}
+
+{% block route_batch %}{{ path('admin_mensajemasivo_batch') }}{% endblock %}
+
+{% block header_table %}
+{% import 'CULabsAdminBundle:Crud:macros.html.twig' as macros %}
+<tr>
+    <th class="checkall batch"><input type="checkbox" onchange="admin_list_checkall(this, '#MensajeMasivo_list .check input')"/></th>
+    <th>{{ macros.sort_field('Asunto'|trans, 'asunto', sort, 'ajax_MensajeMasivo', 'admin_mensajemasivo_sort', 'indicator_table_MensajeMasivo') }}</th>    
+    <th>{{ 'Estado'|trans }}</th>
+    <th>{{ 'Options'|trans }}</th>
+</tr>
+{% endblock %}
+
+{% block body_table %}
+    {% for entity in pager %}
+    <tr id="row_{{ loop.index }}" onclick="admin_list_checkrow('#' + this.id + ' .check input')">
+        <td class="check"><input type="checkbox" value="{{ entity.id }}" name="ids[]"/></td>
+        <td><a href="{{ path('admin_mensajemasivo_show', { 'id': entity.id }) }}">{{ entity.asunto }}</a></td>
+        <td>{{ entity.status|trans }}</td>
+        <td class="opcions span4">
+            <ul>                  
+                <li>
+                    {% if is_granted('ROLE_MENSAJEMASIVO_SHOW') %}
+                    <a class="btn btn-info btn-small" title="{{ 'show'|trans }}" href="{{ path('admin_mensajemasivo_show', { 'id': entity.id }) }}">
+                        <i class="icon-eye-open"></i>
+                    </a>
+                    {% endif %}
+                </li>                  
+                <li>
+                    {% if is_granted('ROLE_MENSAJEMASIVO_EDIT') %}
+                    <a class="btn btn-primary btn-small" title="{{ 'edit'|trans }}" href="{{ path('admin_mensajemasivo_edit', { 'id': entity.id }) }}">
+                        <i class="icon-pencil icon-white"></i>
+                    </a>
+                    {% endif %}
+                </li>                  
+                <li>
+                    {% if is_granted('ROLE_MENSAJEMASIVO_ACTIVAR') and entity.isNuevo %}
+                    <a class="btn btn-primary btn-small" title="{{ 'Activar'|trans }}" href="{{ path('admin_mensajemasivo_activar', { 'id': entity.id }) }}">
+                        <i class="icon-play-circle icon-white"></i>
+                    </a>                                      
+                    {% endif %}                    
+                </li>                
+                <li>
+                    {% if is_granted('ROLE_MENSAJEMASIVO_DELETE') %}
+                    <a class="btn btn-danger btn-small" title="{{ 'delete'|trans }}" href="#" onclick="confirmarUrl('{{ 'Realmente desea borrar'|trans }}', '{{ path('admin_mensajemasivo_delete', { 'id': entity.id }) }}', '{{ 'Comfirmar'|trans }}')">
+                        <i class="icon-remove icon-white"></i>
+                    </a>                                      
+                    {% endif %}                    
+                </li>                
+            </ul>
+        </td>
+    </tr>
+    {% endfor %}
+{% endblock %}
+ 
+{% block footer_table %}
+    <div class="batch">
+        {% if is_granted('ROLE_MENSAJEMASIVO_DELETE') %}
+        <select name="batch_action" class="batch_actions">
+            <option value="">{{'Select a action'|trans}}</option>
+            <option value="delete">{{'Delete'|trans}}</option>
+        </select>
+        <input type="submit" class="btn btn-primary" value="{{'Ok'|trans}}"/>
+        {% endif %}
+        <div class="loader">
+            <img style="display: none" id="indicator_table_MensajeMasivo" src="{{ asset('bundles/culabsadmin/images/loader.gif') }}"/>
+        </div>
+    </div>
+    {% include 'CULabsAdminBundle:Crud:pager.html.twig' with { 
+        'pager':                pager,
+        'zona':                 'ajax_MensajeMasivo',
+        'url':                  path('admin_mensajemasivo'),
+        'url_changemaxperpage': path('admin_mensajemasivo_changemaxperpage'),
+        'maxperpage_list':      [10,20,30,50, 100],
+    } %}
+{% endblock %}
